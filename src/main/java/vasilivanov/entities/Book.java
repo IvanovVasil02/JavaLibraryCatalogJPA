@@ -1,13 +1,18 @@
 package vasilivanov.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Book extends LibraryProduct {
 
   private String author;
   private String genre;
+
+  @OneToMany(mappedBy = "product")
+  private List<Loan> loanList;
 
 
   public Book(String isbnCode, String title, LocalDate publicationYear, long pagesNumber, String author, String genre) {
