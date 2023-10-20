@@ -25,6 +25,9 @@ public abstract class LibraryProduct {
   protected LocalDate publicationYear;
   protected long pagesNumber;
 
+  public LibraryProduct() {
+  }
+
   public LibraryProduct(String isbnCode, String title, LocalDate publicationYear, long pagesNumber) {
     this.isbnCode = isbnCode;
     this.title = title;

@@ -23,11 +23,11 @@ public class Loan {
   @Column(name = "return_product_date")
   private LocalDate returnProductDate;
 
-  public Loan(User user, LibraryProduct product, LocalDate startDate, LocalDate endtDate, LocalDate returnProductDate) {
+  public Loan(User user, LibraryProduct product, String startDate, String endtDate, LocalDate returnProductDate) {
     this.user = user;
     this.product = product;
-    this.startDate = startDate;
-    this.endtDate = endtDate;
+    this.startDate = LocalDate.parse(startDate);
+    this.endtDate = LocalDate.parse(endtDate);
     this.returnProductDate = returnProductDate;
   }
 

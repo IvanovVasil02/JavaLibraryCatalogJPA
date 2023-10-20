@@ -14,6 +14,8 @@ public class Book extends LibraryProduct {
   @OneToMany(mappedBy = "product")
   private List<Loan> loanList;
 
+  public Book() {
+  }
 
   public Book(String isbnCode, String title, LocalDate publicationYear, long pagesNumber, String author, String genre) {
     super(isbnCode, title, publicationYear, pagesNumber);
