@@ -19,18 +19,18 @@ public class Loan {
   @Column(name = "start_date")
   private LocalDate startDate;
   @Column(name = "end_date")
-  private LocalDate endtDate;
+  private LocalDate endDate;
   @Column(name = "return_product_date")
   private LocalDate returnProductDate;
 
   public Loan() {
   }
 
-  public Loan(User user, LibraryProduct product, String startDate, String endtDate, LocalDate returnProductDate) {
+  public Loan(User user, LibraryProduct product, String startDate, String endDate, LocalDate returnProductDate) {
     this.user = user;
     this.product = product;
     this.startDate = LocalDate.parse(startDate);
-    this.endtDate = LocalDate.parse(endtDate);
+    this.endDate = LocalDate.parse(endDate);
     this.returnProductDate = returnProductDate;
   }
 
@@ -63,11 +63,11 @@ public class Loan {
   }
 
   public LocalDate getEndtDate() {
-    return endtDate;
+    return endDate;
   }
 
-  public void setEndtDate(LocalDate endtDate) {
-    this.endtDate = endtDate;
+  public void setEndtDate(LocalDate endDate) {
+    this.endDate = endDate;
   }
 
   public LocalDate getReturnProductDate() {
@@ -85,7 +85,7 @@ public class Loan {
             ", user=" + user +
             ", product=" + product +
             ", startDate=" + startDate +
-            ", endtDate=" + endtDate +
+            ", endDate=" + endDate +
             ", returnProductDate=" + returnProductDate +
             '}';
   }

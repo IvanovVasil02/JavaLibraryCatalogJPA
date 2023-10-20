@@ -77,7 +77,7 @@ public class CatalogDao {
 
   public List<LibraryProduct> getItemsByAuthor(String author) {
     try {
-      TypedQuery<LibraryProduct> getResultQuery = em.createQuery("SELECT lp FROM LibraryProduct lp WHERE lp.author LIKE :author", LibraryProduct.class);
+      TypedQuery<LibraryProduct> getResultQuery = em.createQuery("SELECT lp FROM LibraryProduct lp WHERE LOWER(lp.author) LIKE LOWER(:author)", LibraryProduct.class);
       getResultQuery.setParameter("author", "%" + author + "%");
       return getResultQuery.getResultList();
     } catch (Exception e) {

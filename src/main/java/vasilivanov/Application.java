@@ -4,17 +4,21 @@ import com.github.javafaker.Faker;
 import vasilivanov.dao.CatalogDao;
 import vasilivanov.dao.LoanDao;
 import vasilivanov.dao.UserDao;
-import vasilivanov.entities.LibraryProduct;
-import vasilivanov.entities.Loan;
-import vasilivanov.entities.User;
+import vasilivanov.entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.function.Supplier;
+
+import static vasilivanov.entities.LibraryProduct.convertToLocalDate;
+import static vasilivanov.entities.LibraryProduct.getRndm;
+import static vasilivanov.entities.Magazine.randomPeriodicity;
 
 public class Application {
 
@@ -30,7 +34,15 @@ public class Application {
       CatalogDao cd = new CatalogDao(em);
       UserDao ud = new UserDao(em);
       LoanDao ld = new LoanDao(em);
+      Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2000");
+      Date date2 = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/2023");
       Supplier<User> userSupplier = () -> new User(f.code().ean8(), f.name().firstName(), f.name().lastName(), f.date().birthday());
+      Supplier<Book> bookSupplier = () -> new Book(f.code().isbn10(),
+              f.book().title(), convertToLocalDate(f.date().between(date1, date2)),
+              getRndm(), f.book().author(), f.book().genre());
+      Supplier<Magazine> magazineSupplier = () -> new Magazine(f.code().isbn10(),
+              f.book().title(), convertToLocalDate(f.date().between(date1, date2)),
+              getRndm(), randomPeriodicity());
 
       User usFrmDb = ud.getById("07593048");
       LibraryProduct lbFrmDb = cd.getById("0218417667");
@@ -57,70 +69,79 @@ public class Application {
           switch (choice) {
 
             case 0:
-              cd.getAllLp().forEach(System.out::println);
+              if (!cd.getAllLp().isEmpty()) {
+                cd.getAllLp().forEach(System.out::println);
+              } else {
+                System.out.println("There are not library product, add one");
+              }
               System.out.println("What do you want to do now");
-              choice = Integer.parseInt(scanner.nextLine());
+              break;
 
             case 1:
-              while (choice == 1) {
-                System.out.println("enter the data of library product that you want to add");
-                ud.save(userSupplier.get());
-
-
-                System.out.println("What do you want to do now");
-                choice = Integer.parseInt(scanner.nextLine());
-              }
+              System.out.println("enter the data of library product that you want to add");
+              cd.save(bookSupplier.get());
+              System.out.println("What do you want to do now");
+              break;
 
             case 2:
-              while (choice == 2) {
-                System.out.println("enter the ISBN code of the book you want to remove from the catalog");
-                isbn = scanner.nextLine();
-                cd.deleteLibraryProductById(isbn);
-                choice = Integer.parseInt(scanner.nextLine());
-              }
+              System.out.println("enter the ISBN code of the book you want to remove from the catalog");
+              isbn = scanner.nextLine();
+              cd.deleteLibraryProductById(isbn);
+              break;
+
             case 3:
-              while (choice == 3) {
-                System.out.println("enter the ISBN code to search: ");
-                isbn = scanner.nextLine();
-                cd.getById(isbn);
-
-                System.out.println("What do you want to do now");
-                choice = Integer.parseInt(scanner.nextLine());
+              System.out.println("enter the ISBN code to search: ");
+              isbn = scanner.nextLine();
+              if (cd.getById(isbn) != null) {
+                System.out.println(cd.getById(isbn));
+              } else {
+                System.out.println("There is no product with this ISBN");
               }
+              System.out.println("What do you want to do now");
+              break;
+
             case 4:
-              while (choice == 4) {
-                System.out.println("enter the year of publication ");
-                int userDate = Integer.parseInt(scanner.nextLine());
+              System.out.println("enter the year of publication ");
+              int userDate = Integer.parseInt(scanner.nextLine());
+              if (!cd.getItemsByYear(userDate).isEmpty()) {
                 cd.getItemsByYear(userDate).forEach(System.out::println);
-
-                System.out.println("What do you want to do now");
-                choice = Integer.parseInt(scanner.nextLine());
+              } else {
+                System.out.println("There are no products related to the year entered");
               }
+              System.out.println("What do you want to do now");
+              break;
+
             case 5:
-              while (choice == 5) {
-                System.out.println("Enter the author's name");
-                String author = scanner.nextLine();
+              System.out.println("Enter the author's name");
+              String author = scanner.nextLine();
+              if (!cd.getItemsByAuthor(author).isEmpty()) {
                 cd.getItemsByAuthor(author).forEach(System.out::println);
-
-                System.out.println("What do you want to do now");
-                choice = Integer.parseInt(scanner.nextLine());
+              } else {
+                System.out.println("There are no products related to author entered");
               }
+              System.out.println("What do you want to do now");
+              break;
+
             case 6:
               System.out.println("Enter the user's card number");
               String useCard = scanner.nextLine();
-              ld.getBorrowedProducts(useCard).forEach(System.out::println);
-
+              if (!ld.getBorrowedProducts(useCard).isEmpty()) {
+                ld.getBorrowedProducts(useCard).forEach(System.out::println);
+              } else {
+                System.out.println("the list of loaned products is empty or the card number is wrong");
+              }
               System.out.println("What do you want to do now");
-              choice = Integer.parseInt(scanner.nextLine());
+              break;
+
             case 7:
-
               ld.getLoansExpiredORNotRepaid().forEach(System.out::println);
-
               System.out.println("What do you want to do now");
-              choice = Integer.parseInt(scanner.nextLine());
+              break;
+
             default:
               System.out.println("You need to enter one of the controls above");
               choice = Integer.parseInt(scanner.nextLine());
+              break;
 
           }
         } catch (Exception ex) {
