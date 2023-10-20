@@ -1,8 +1,9 @@
 package vasilivanov.entities;
 
-import enums.Periodicity;
 import org.apache.commons.io.FileUtils;
+import vasilivanov.enums.Periodicity;
 
+import javax.persistence.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +15,11 @@ import java.util.*;
 
 import static java.lang.Long.parseLong;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "library_catalog")
 public abstract class LibraryProduct {
+  @Id
   protected String isbnCode;
   protected String title;
   protected LocalDate publicationYear;

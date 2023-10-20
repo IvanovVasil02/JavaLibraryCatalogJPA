@@ -1,10 +1,12 @@
 package vasilivanov.entities;
 
-import enums.Periodicity;
+import vasilivanov.enums.Periodicity;
 
+import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.util.Random;
 
+@Entity
 public class Magazine extends LibraryProduct {
   private Periodicity periodicity;
 

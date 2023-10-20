@@ -1,7 +1,9 @@
 package vasilivanov.entities;
 
+import javax.persistence.Entity;
 import java.time.LocalDate;
 
+@Entity
 public class Book extends LibraryProduct {
 
   private String author;
@@ -18,8 +20,16 @@ public class Book extends LibraryProduct {
     return author;
   }
 
+  public void setAuthor(String author) {
+    this.author = author;
+  }
+
   public String getGenre() {
     return genre;
+  }
+
+  public void setGenre(String genre) {
+    this.genre = genre;
   }
 
   @Override
