@@ -1,14 +1,8 @@
 package vasilivanov.entities;
 
-import vasilivanov.enums.Sex;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,19 +12,18 @@ public class User {
   private long id;
   private String name;
   private String surname;
-  private String birtDate;
+  @Column(name = "birth_date")
   private LocalDate birthDate;
 
   public User() {
   }
 
-  public User(String name, String surname, String email, String birthDate, Sex sex) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+  public User(String name, String surname, String birthDate) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     this.name = name;
     this.surname = surname;
-    this.email = email;
     this.birthDate = LocalDate.parse(birthDate, formatter);
-    this.sex = sex;
+
   }
 
   public long getId() {
@@ -54,14 +47,6 @@ public class User {
     this.surname = surname;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
   public LocalDate getBirthDate() {
     return birthDate;
   }
@@ -70,29 +55,12 @@ public class User {
     this.birthDate = birthDate;
   }
 
-  public Sex getSex() {
-    return sex;
-  }
-
-  public void setSex(Sex sex) {
-    this.sex = sex;
-  }
-
-  public List<Partecipation> getPartecipationList() {
-    return partecipationList;
-  }
-
-  public void setPartecipationList(List<Partecipation> partecipationList) {
-    this.partecipationList = partecipationList;
-  }
-
   @Override
   public String toString() {
-    return " name='" + name + '\'' +
+    return "User{" +
+            "name='" + name + '\'' +
             ", surname='" + surname + '\'' +
-            ", email='" + email + '\'' +
             ", birthDate=" + birthDate +
-            ", sex=" + sex +
             '}';
   }
 }
