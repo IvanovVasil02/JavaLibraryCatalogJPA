@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.util.Locale;
 
 public class Application {
+  
   private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("u4d2w3");
 
   public static void main(String[] args) throws ParseException {
