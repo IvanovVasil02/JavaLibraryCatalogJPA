@@ -36,7 +36,8 @@ public class Application {
 
       Loan loan1 = new Loan(usFrmDb, lbFrmDb, "2023-10-02", "2023-10-29", null);
 
-      ld.getBorrowedProducts("07593048").forEach(System.out::println);
+      ld.getLoansExpiredORNotRepaid().forEach(System.out::println);
+
     } catch (Exception er) {
       System.err.println(er.getMessage());
     } finally {

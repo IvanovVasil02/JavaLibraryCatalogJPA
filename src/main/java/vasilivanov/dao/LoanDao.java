@@ -6,6 +6,7 @@ import vasilivanov.entities.Loan;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.List;
 
 public class LoanDao {
@@ -61,7 +62,9 @@ public class LoanDao {
 
   public List<LibraryProduct> getBorrowedProducts(String userCard) {
     try {
-      TypedQuery<LibraryProduct> getResultQuery = em.createQuery("SELECT lp FROM Loan l INNER JOIN LibraryProduct lp ON l.product = lp.isbnCode WHERE l.user.id = :user_card", LibraryProduct.class);
+      TypedQuery<LibraryProduct> getResultQuery = em.createQuery("SELECT lp " +
+              "FROM Loan l INNER JOIN LibraryProduct lp ON l.product = lp.isbnCode " +
+              "WHERE l.user.id = :user_card", LibraryProduct.class);
       getResultQuery.setParameter("user_card", userCard);
       return getResultQuery.getResultList();
     } catch (Exception e) {
@@ -69,6 +72,18 @@ public class LoanDao {
       throw e;
     }
   }
+
+  public List<Loan> getLoansExpiredORNotRepaid() {
+    try {
+      TypedQuery<Loan> getResultQuery = em.createQuery("Select l FROM Loan l WHERE l.endDate > :now", Loan.class);
+      getResultQuery.setParameter("now", LocalDate.now());
+      return getResultQuery.getResultList();
+    } catch (Exception e) {
+      System.out.println("There was an error loading data");
+      throw e;
+    }
+  }
+
 
   public void loanRefresh(Loan loanToRefresh) {
     em.refresh(loanToRefresh);

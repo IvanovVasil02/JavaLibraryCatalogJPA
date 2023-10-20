@@ -23,6 +23,9 @@ public class Loan {
   @Column(name = "return_product_date")
   private LocalDate returnProductDate;
 
+  public Loan() {
+  }
+
   public Loan(User user, LibraryProduct product, String startDate, String endtDate, LocalDate returnProductDate) {
     this.user = user;
     this.product = product;
