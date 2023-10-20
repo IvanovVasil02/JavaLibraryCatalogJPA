@@ -10,6 +10,9 @@ import java.util.Random;
 public class Magazine extends LibraryProduct {
   private Periodicity periodicity;
 
+  public Magazine() {
+  }
+
   public Magazine(String isbnCode, String title, LocalDate publicationYear, long pagesNumber, Periodicity periodicity) {
     super(isbnCode, title, publicationYear, pagesNumber);
     this.periodicity = periodicity;

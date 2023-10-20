@@ -1,9 +1,12 @@
 package vasilivanov.dao;
 
+import vasilivanov.entities.LibraryProduct;
 import vasilivanov.entities.Loan;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 public class LoanDao {
   private final EntityManager em;
@@ -54,6 +57,17 @@ public class LoanDao {
       }
     }
 
+  }
+
+  public List<LibraryProduct> getBorrowedProducts(String userCard) {
+    try {
+      TypedQuery<LibraryProduct> getResultQuery = em.createQuery("SELECT lp FROM Loan l INNER JOIN LibraryProduct lp ON l.product = lp.isbnCode WHERE l.user.id = :user_card", LibraryProduct.class);
+      getResultQuery.setParameter("user_card", userCard);
+      return getResultQuery.getResultList();
+    } catch (Exception e) {
+      System.out.println("There was an error loading data");
+      throw e;
+    }
   }
 
   public void loanRefresh(Loan loanToRefresh) {

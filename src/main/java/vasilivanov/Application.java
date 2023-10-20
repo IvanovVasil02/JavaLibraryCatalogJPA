@@ -13,9 +13,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 public class Application {
-  
+
   private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("u4d2w3");
 
   public static void main(String[] args) throws ParseException {
@@ -28,15 +29,14 @@ public class Application {
       CatalogDao cd = new CatalogDao(em);
       UserDao ud = new UserDao(em);
       LoanDao ld = new LoanDao(em);
-//      Supplier<User> userSupplier = () -> new User(f.code().ean8(), f.name().firstName(), f.name().lastName(), f.date().birthday());
+      Supplier<User> userSupplier = () -> new User(f.code().ean8(), f.name().firstName(), f.name().lastName(), f.date().birthday());
 
       User usFrmDb = ud.getById("07593048");
       LibraryProduct lbFrmDb = cd.getById("0218417667");
 
       Loan loan1 = new Loan(usFrmDb, lbFrmDb, "2023-10-02", "2023-10-29", null);
 
-      ld.save(loan1);
-
+      ld.getBorrowedProducts("07593048").forEach(System.out::println);
     } catch (Exception er) {
       System.err.println(er.getMessage());
     } finally {
