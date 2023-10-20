@@ -11,7 +11,7 @@ public class Loan {
   private long id;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_card")
   private User user;
   @ManyToOne
   @JoinColumn(name = "product_id")
