@@ -75,7 +75,7 @@ public class LoanDao {
 
   public List<Loan> getLoansExpiredORNotRepaid() {
     try {
-      TypedQuery<Loan> getResultQuery = em.createQuery("Select l FROM Loan l WHERE l.endDate > :now", Loan.class);
+      TypedQuery<Loan> getResultQuery = em.createQuery("Select l FROM Loan l WHERE l.endDate > :now AND WHERE l.returnProductDate = null", Loan.class);
       getResultQuery.setParameter("now", LocalDate.now());
       return getResultQuery.getResultList();
     } catch (Exception e) {
