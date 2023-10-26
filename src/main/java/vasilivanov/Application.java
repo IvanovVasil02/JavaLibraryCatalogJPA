@@ -22,7 +22,7 @@ import static vasilivanov.entities.Magazine.randomPeriodicity;
 
 public class Application {
 
-  private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("u4d2w3");
+  private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("LibraSysDB");
 
   public static void main(String[] args) throws ParseException {
 
@@ -44,11 +44,11 @@ public class Application {
               f.book().title(), convertToLocalDate(f.date().between(date1, date2)),
               getRndm(), randomPeriodicity());
 
-//      for (int i = 0; i < 9; i++) {
-//        ud.save(userSupplier.get());
-//        cd.save(bookSupplier.get());
-//        cd.save(magazineSupplier.get());
-//      }
+      for (int i = 0; i < 9; i++) {
+        ud.save(userSupplier.get());
+        cd.save(bookSupplier.get());
+        cd.save(magazineSupplier.get());
+      }
 
       User usFrmDb = ud.getById("07593048");
       LibraryProduct lbFrmDb = cd.getById("0218417667");
