@@ -69,6 +69,7 @@ public class CatalogDao {
       TypedQuery<LibraryProduct> getResultQuery = em.createQuery("SELECT lp FROM LibraryProduct lp WHERE EXTRACT(YEAR FROM lp.publicationYear) = :year", LibraryProduct.class);
       getResultQuery.setParameter("year", year);
       return getResultQuery.getResultList();
+      
     } catch (Exception e) {
       System.out.println("There was an error loading data");
       throw e;
